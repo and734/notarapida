@@ -19,7 +19,7 @@ interface NoteListProps {
 
 export function NoteList({ notes, selectedNoteId, onSelectNote, onDeleteNote, onNewNote }: NoteListProps) {
   return (
-    <Card className="h-full flex flex-col border-0">
+    <Card className="h-full flex flex-col border-0 rounded-none md:border-r">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="font-headline text-2xl">My Notes</CardTitle>
         <Button onClick={onNewNote} size="sm">

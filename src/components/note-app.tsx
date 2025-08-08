@@ -108,7 +108,11 @@ export function NoteApp() {
   const handleDeleteNote = (id: string) => {
     setNotes(notes.filter((note) => note.id !== id));
     if (selectedNoteId === id) {
-      setSelectedNoteId(notes.length > 1 ? notes.find(n => n.id !== id)?.id || null : null);
+      const newSelectedId = notes.length > 1 ? notes.find(n => n.id !== id)?.id || null : null
+      setSelectedNoteId(newSelectedId);
+      if (isMobile && newSelectedId) {
+        setMobileView("list");
+      }
     }
     toast({ title: "Note Deleted", variant: "destructive", description: "The note has been permanently removed." });
   };
@@ -135,7 +139,7 @@ export function NoteApp() {
         </div>
         <ThemeToggle />
       </header>
-      <main className="flex-grow overflow-hidden bg-secondary/40">
+      <main className="flex-grow overflow-hidden bg-background">
         <div className="grid h-full grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
           <div className={cn("h-full bg-card", isMobile && mobileView !== 'list' && 'hidden')}>
             <NoteList
@@ -150,6 +154,7 @@ export function NoteApp() {
             <NoteEditor
               selectedNote={selectedNote}
               onSaveNote={handleSaveNote}
+              onDeleteNote={handleDeleteNote}
               isSaving={isSaving}
               onBack={() => setMobileView("list")}
               isMobile={!!isMobile}

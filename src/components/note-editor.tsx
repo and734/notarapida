@@ -2,7 +2,7 @@
 
 import type { Note } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, FileEdit, Loader2, Save } from "lucide-react";
+import { ArrowLeft, FileEdit, Loader2, Save, Trash2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useEffect } from "react";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
 const noteSchema = z.object({
   title: z.string().min(1, { message: "Title is required." }),
@@ -22,12 +23,13 @@ type NoteFormValues = z.infer<typeof noteSchema>;
 interface NoteEditorProps {
   selectedNote: Note | null;
   onSaveNote: (data: NoteFormValues) => void;
+  onDeleteNote: (id: string) => void;
   isSaving: boolean;
   onBack?: () => void;
   isMobile: boolean;
 }
 
-export function NoteEditor({ selectedNote, onSaveNote, isSaving, onBack, isMobile }: NoteEditorProps) {
+export function NoteEditor({ selectedNote, onSaveNote, onDeleteNote, isSaving, onBack, isMobile }: NoteEditorProps) {
   const form = useForm<NoteFormValues>({
     resolver: zodResolver(noteSchema),
     defaultValues: {
@@ -62,9 +64,15 @@ export function NoteEditor({ selectedNote, onSaveNote, isSaving, onBack, isMobil
     );
   }
 
+  const handleDelete = () => {
+    if (selectedNote && selectedNote.id !== "new") {
+      onDeleteNote(selectedNote.id);
+    }
+  };
+
   return (
     <div className="p-0 md:p-6 h-full">
-    <Card className="h-full flex flex-col shadow-lg">
+    <Card className="h-full flex flex-col shadow-lg border-0 rounded-none md:border md:rounded-lg">
       <CardHeader className="flex flex-row items-center justify-between">
         <div className="flex items-center gap-4">
         {isMobile && (
@@ -110,7 +118,29 @@ export function NoteEditor({ selectedNote, onSaveNote, isSaving, onBack, isMobil
                 </FormItem>
               )}
             />
-            <div className="flex justify-end">
+            <div className="flex justify-end items-center gap-2">
+              {selectedNote.id !== 'new' && (
+                 <AlertDialog>
+                 <AlertDialogTrigger asChild>
+                   <Button variant="destructive" type="button">
+                     <Trash2 className="mr-2 h-4 w-4" />
+                     Delete
+                   </Button>
+                 </AlertDialogTrigger>
+                 <AlertDialogContent>
+                   <AlertDialogHeader>
+                     <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                     <AlertDialogDescription>
+                       This action cannot be undone. This will permanently delete your note titled "{selectedNote.title}".
+                     </AlertDialogDescription>
+                   </AlertDialogHeader>
+                   <AlertDialogFooter>
+                     <AlertDialogCancel>Cancel</AlertDialogCancel>
+                     <AlertDialogAction onClick={handleDelete} className="bg-destructive hover:bg-destructive/90">Delete</AlertDialogAction>
+                   </AlertDialogFooter>
+                 </AlertDialogContent>
+               </AlertDialog>
+              )}
               <Button type="submit" disabled={isSaving}>
                 {isSaving ? (
                   <>
