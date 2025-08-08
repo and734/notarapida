@@ -122,22 +122,22 @@ export function NoteApp() {
   return (
     <div className="flex h-screen w-screen flex-col">
       <header className="flex h-16 items-center justify-between border-b bg-card px-4 sm:px-6">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
             <svg
-                className="h-8 w-8 text-primary-foreground"
+                className="h-8 w-8 text-primary"
                 viewBox="0 0 24 24"
                 fill="currentColor"
                 xmlns="http://www.w3.org/2000/svg"
                 >
                 <path d="M14 2H6C4.9 2 4.01 2.9 4.01 4L4 20C4 21.1 4.89 22 5.99 22H18C19.1 22 20 21.1 20 20V8L14 2ZM18 20H6V4H13V9H18V20Z" />
             </svg>
-            <h1 className="font-headline text-2xl font-bold text-primary-foreground">Nota Rapida</h1>
+            <h1 className="font-headline text-2xl font-bold text-foreground">Nota Rapida</h1>
         </div>
         <ThemeToggle />
       </header>
-      <main className="flex-grow overflow-hidden">
+      <main className="flex-grow overflow-hidden bg-secondary/40">
         <div className="grid h-full grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
-          <div className={cn("h-full border-r", isMobile && mobileView !== 'list' && 'hidden')}>
+          <div className={cn("h-full bg-card", isMobile && mobileView !== 'list' && 'hidden')}>
             <NoteList
               notes={notes.filter(n => n.id !== 'new')}
               selectedNoteId={selectedNoteId}
@@ -146,7 +146,7 @@ export function NoteApp() {
               onNewNote={handleNewNote}
             />
           </div>
-          <div className={cn("p-4 md:col-span-2 lg:col-span-3 h-full", isMobile && mobileView !== 'editor' && 'hidden')}>
+          <div className={cn("md:col-span-2 lg:col-span-3 h-full", isMobile && mobileView !== 'editor' && 'hidden')}>
             <NoteEditor
               selectedNote={selectedNote}
               onSaveNote={handleSaveNote}

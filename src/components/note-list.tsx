@@ -19,7 +19,7 @@ interface NoteListProps {
 
 export function NoteList({ notes, selectedNoteId, onSelectNote, onDeleteNote, onNewNote }: NoteListProps) {
   return (
-    <Card className="h-full flex flex-col">
+    <Card className="h-full flex flex-col border-0">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="font-headline text-2xl">My Notes</CardTitle>
         <Button onClick={onNewNote} size="sm">
@@ -41,11 +41,11 @@ export function NoteList({ notes, selectedNoteId, onSelectNote, onDeleteNote, on
                   onClick={() => onSelectNote(note.id)}
                   className={cn(
                     "group flex cursor-pointer items-start justify-between rounded-lg border p-4 transition-colors hover:bg-accent",
-                    selectedNoteId === note.id && "bg-primary/80 border-primary-foreground/20 hover:bg-primary"
+                    selectedNoteId === note.id && "bg-primary text-primary-foreground hover:bg-primary/90"
                   )}
                 >
                   <div className="overflow-hidden">
-                    <h3 className={cn("font-semibold truncate", selectedNoteId === note.id && "text-primary-foreground")}>{note.title}</h3>
+                    <h3 className="font-semibold truncate">{note.title}</h3>
                     <p className={cn("text-sm text-muted-foreground line-clamp-2 mt-1", selectedNoteId === note.id && "text-primary-foreground/80")}>
                       {note.content || "No content"}
                     </p>

@@ -52,7 +52,7 @@ export function NoteEditor({ selectedNote, onSaveNote, isSaving, onBack, isMobil
 
   if (!selectedNote) {
     return (
-      <div className="flex h-full items-center justify-center rounded-lg border-2 border-dashed bg-card p-8">
+      <div className="flex h-full items-center justify-center p-8">
         <div className="text-center">
           <FileEdit className="mx-auto h-12 w-12 text-muted-foreground" />
           <h2 className="mt-4 text-xl font-semibold">No Note Selected</h2>
@@ -63,7 +63,8 @@ export function NoteEditor({ selectedNote, onSaveNote, isSaving, onBack, isMobil
   }
 
   return (
-    <Card className="h-full flex flex-col">
+    <div className="p-0 md:p-6 h-full">
+    <Card className="h-full flex flex-col shadow-lg">
       <CardHeader className="flex flex-row items-center justify-between">
         <div className="flex items-center gap-4">
         {isMobile && (
@@ -86,7 +87,7 @@ export function NoteEditor({ selectedNote, onSaveNote, isSaving, onBack, isMobil
                 <FormItem>
                   <FormLabel className="text-lg">Title</FormLabel>
                   <FormControl>
-                    <Input placeholder="Your note title" {...field} className="text-base"/>
+                    <Input placeholder="Your note title" {...field} className="text-xl font-semibold !ring-offset-background"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -128,5 +129,6 @@ export function NoteEditor({ selectedNote, onSaveNote, isSaving, onBack, isMobil
         </Form>
       </CardContent>
     </Card>
+    </div>
   );
 }
